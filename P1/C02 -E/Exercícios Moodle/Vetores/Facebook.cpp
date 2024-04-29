@@ -1,4 +1,5 @@
 #include<iostream>
+#include<vector>
 
 using namespace std;
 
@@ -8,8 +9,7 @@ int main(){
     
     cin >> nUser;
 
-    double nContatos[nUser];
-
+    vector<double> nContatos(nUser);
 
     for (int i = 0; i < nUser; i++)
         cin >> nContatos[i];
