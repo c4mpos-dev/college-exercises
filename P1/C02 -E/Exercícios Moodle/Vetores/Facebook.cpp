@@ -4,24 +4,30 @@ using namespace std;
 
 int main(){
 
-    int nUser, nMaior = 0, nMenor = 0;
+    int nUser = 0, nMaior, nMenor;
     
     cin >> nUser;
 
     double nContatos[nUser];
 
-    for (int i = 0; i < nUser; i++){
+
+    for (int i = 0; i < nUser; i++)
         cin >> nContatos[i];
-        
-        if (nContatos[i] > nContatos[i-1] && nContatos[i] > nMaior)
-            nMaior = nContatos[i];
 
+    nMenor = nContatos[0];
+    nMaior = nContatos[0];
 
-        if (nContatos[i] < nContatos[i-1] && nContatos[i] < nMenor)
+    for (int i = 0; i < nUser; i++){
+        if (nMenor > nContatos[i])
             nMenor = nContatos[i];
     }
+        
+    for (int i = 0; i < nUser; i++){
+        if (nMaior < nContatos[i])
+            nMaior = nContatos[i];
+    }
 
-    cout << "Menor numero de contatos" << nMenor << endl;
-    cout << "Maior numero de contatos" << nMaior << endl;
+    cout << "Menor numero de contatos: " << nMenor << endl;
+    cout << "Maior numero de contatos: " << nMaior << endl;
 
 }
