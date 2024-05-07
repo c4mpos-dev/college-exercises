@@ -7,9 +7,11 @@ int main(){
 
     int nUser = 0, nMaior, nMenor;
     
-    cin >> nUser;
+    do {
+        cin >> nUser;
+    }while(nUser < 0 || nUser > 1000);
 
-    vector<double> nContatos(nUser);
+    vector<int> nContatos(nUser);
 
     for (int i = 0; i < nUser; i++)
         cin >> nContatos[i];
