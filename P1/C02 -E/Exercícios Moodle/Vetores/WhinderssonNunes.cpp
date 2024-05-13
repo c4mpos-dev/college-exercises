@@ -1,17 +1,14 @@
 #include<iostream>
-#include<vector>
 
 using namespace std;
 
 int main(){
 
-    int nVideos = 0, nMaior = 0, nMenor = 0;
+    int nVideos = 0, nViews[999], nMaior = 0, nMenor = 0;
     
     do {
         cin >> nVideos;
     }while(nVideos < 0 || nVideos > 1000);
-
-    vector<int> nViews(nVideos);
 
     for (int i = 0; i < nVideos; i++)
         cin >> nViews[i];
@@ -19,7 +16,7 @@ int main(){
     for (int i = 0; i < nVideos; i++){
         if (nViews[i] > 10000000)
             nMaior++;
-        else
+        else if  (nViews[i] < 10000000)
             nMenor++;
 
     }
