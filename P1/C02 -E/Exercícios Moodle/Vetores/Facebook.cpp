@@ -5,13 +5,12 @@ using namespace std;
 
 int main(){
 
-    int nUser = 0, nMaior, nMenor;
-    
+    // Defino o vetor com 999 posições mesmo que grande parte fique vazia, pois a matéria é algoritmos 1 e não posso utilizar funções vector, por exemplo.
+    int nUser = 0, nContatos[999], nMaior, nMenor;
+
     do {
         cin >> nUser;
     }while(nUser < 0 || nUser > 1000);
-
-    vector<int> nContatos(nUser);
 
     for (int i = 0; i < nUser; i++)
         cin >> nContatos[i];
