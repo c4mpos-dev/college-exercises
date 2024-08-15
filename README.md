@@ -12,13 +12,13 @@ Os exercícios cobrem uma ampla gama de tópicos em algoritmos e estruturas de d
 
 O repositório está organizado da seguinte maneira:
 
-- **`/P1/`**: Exercícios do primeiro semestre.
-- **`/P2/`**: Exercícios do segundo semestre.
-- **`/P3/`**: Exercícios do terceiro semestre.
-- **`/P4/`**: Exercícios do quarto semestre.
+- **`/P1/Disciplina`**: Exercícios da disciplina(Do P1) selecionada.
+- **`/P2/Disciplina`**: Exercícios do segundo(Do P2) semestre.
+- **`/P3/Disciplina`**: Exercícios do terceiro(Do P3) semestre.
+- **`/P4/Disciplina`**: Exercícios do quarto(Do P4) semestre.
 - **...**: E assim por diante, conforme os semestres avançam.
 
 Cada diretório por semestre pode conter arquivos e pastas específicas para diferentes exercícios e projetos.
 
-📝 Licença
+## 📝 Licença
 Este projeto não possui uma licença específica. Sinta-se livre para usar os códigos e conceitos para fins educacionais.
