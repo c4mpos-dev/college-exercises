@@ -13,9 +13,9 @@ Os exercícios cobrem uma ampla gama de tópicos em algoritmos e estruturas de d
 O repositório está organizado da seguinte maneira:
 
 - **`/P1/Disciplina`**: Exercícios da disciplina(Do P1) selecionada.
-- **`/P2/Disciplina`**: Exercícios do segundo(Do P2) semestre.
-- **`/P3/Disciplina`**: Exercícios do terceiro(Do P3) semestre.
-- **`/P4/Disciplina`**: Exercícios do quarto(Do P4) semestre.
+- **`/P2/Disciplina`**: Exercícios do segundo(Do P2) selecionada.
+- **`/P3/Disciplina`**: Exercícios do terceiro(Do P3) selecionada.
+- **`/P4/Disciplina`**: Exercícios do quarto(Do P4) selecionada.
 - **...**: E assim por diante, conforme os semestres avançam.
 
 Cada diretório por semestre pode conter arquivos e pastas específicas para diferentes exercícios e projetos.
