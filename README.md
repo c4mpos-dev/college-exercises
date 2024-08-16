@@ -19,6 +19,3 @@ O repositório está organizado da seguinte maneira:
 - **...**: E assim por diante, conforme os semestres avançam.
 
 Cada diretório por semestre pode conter arquivos e pastas específicas para diferentes exercícios e projetos.
-
-## 📝 Licença
-Este projeto não possui uma licença específica. Sinta-se livre para usar os códigos e conceitos para fins educacionais.
