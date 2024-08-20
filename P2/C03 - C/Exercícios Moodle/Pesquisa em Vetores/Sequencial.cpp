@@ -1,55 +1,37 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
 
-int binaria(int vetor[],int tamanho, int x) {
-    bool achou; // var aux p/ busca
-    int baixo, meio, alto; // var aux
-
-    baixo = 0;
-    alto = tamanho-1;
-    achou = false;
-
-    while ((baixo <= alto) && (achou == false)) {
-        meio = (baixo + alto) / 2;
-
-        if (x < vetor[meio])
-            alto = meio- 1;
-        else
-            if (x > vetor[meio])
-                baixo = meio + 1;
-            else
-                achou = true;
+int buscaSequencial(int vetor[], int tamanho, int x) {
+    for (int i = 0; i < tamanho; i++) {
+        if (vetor[i] == x) {
+            return i; 
+        }
     }
-
-    if (achou)
-        return meio;
-    else
-        return-1;
+    return -1; 
 }
 
 int main() {
-    int vet[100], i, X, tam = 0;
+    int vetor[100];
+    int tamanho = 0;
+    int valor;
 
-    while (true){
-        cin >> i;
-
-        if (i == -1){
+    while (true) {
+        cin >> valor;
+        if (valor == -1) 
             break;
-        }
-        else{
-            vet[i];
-            tam++;
-        }
+        vetor[tamanho++] = valor;
     }
 
-    cin >> X;
+    int x;
+    cin >> x;
 
-    int search = binaria(vet, tam, X);
+    int resultado = buscaSequencial(vetor, tamanho, x);
 
-    if (search == -1)
-        cout << X << "nao encontrado" << endl;
-    else
-        cout << X << " encontrado na posicao " << search << endl;
+    if (resultado != -1) {
+        cout << x << " encontrado na posicao " << resultado << endl;
+    } else {
+        cout << x << " nao encontrado" << endl;
+    }
+
+    return 0;
 }
-
-
