@@ -4,7 +4,7 @@ Este repositório contém todos os exercícios realizados nas aulas de algoritmo
 
 ## 📚 Sobre
 
-O repositório **Collge Exercises** é uma coleção de exercícios práticos de programação que foram realizados ao longo dos semestres na INATEL. O objetivo principal é manter um registro organizado e acessível das atividades e desafios que enfrentei durante o curso. 
+O repositório **College Exercises** é uma coleção de exercícios práticos de programação que foram realizados ao longo dos semestres na INATEL. O objetivo principal é manter um registro organizado e acessível das atividades e desafios que enfrentei durante o curso. 
 
 Os exercícios cobrem uma ampla gama de tópicos em algoritmos e estruturas de dados, proporcionando um recurso valioso tanto para revisão quanto para referência futura.
 
