@@ -1,13 +1,11 @@
 #include<iostream>
 using namespace std;
 
-void bubbleSort(int vetor[], int tamanho)
- {
-    int i,j,k=0; // contadores
-    int trab,vetTrab[100];
+int bubbleSort(int vetor[], int tamanho) {
+    int i,j, contador = 0; // contadores
+    int trab;
     bool troca;
     int limite;
-
     troca = true;
     limite = tamanho-1;
     while (troca) {
@@ -15,31 +13,30 @@ void bubbleSort(int vetor[], int tamanho)
         for (i=0;i<limite;i++)
             if (vetor[i] > vetor[i+1]) {
                 trab = vetor[i];
-                vetTrab[i] = trab;
+                cout << "New trab:" << trab << endl;
                 vetor[i] = vetor[i+1];
                 vetor[i+1] = trab;
                 j = i;
                 troca = true;
-                k++;
+                contador++;
             }
         limite = j;
     }
 
-    // return vetTrab[], k;
- }
+    cout << "Contador:" << contador << endl;
+
+    return 0;
+}
 
 int main() {
-    int vet[100], i, X, tam = 0;
+    int vet[100], i, tam = 0;
 
     cin >> tam;
 
     for (i = 0; i < tam; i++)
         cin >> vet[i];
 
-    // int search = binaria(vet, tam, X);
+    bubbleSort(vet, tam);
 
-    // if (search == -1)
-    //     cout << "Nao possui acesso" << endl;
-    // else
-    //     cout << "Possui acesso" << endl;
+    return 0;
 }
