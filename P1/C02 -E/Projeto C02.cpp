@@ -3,7 +3,6 @@
 #include <string>
 #include <windows.h>
 
-
 using namespace std;
 
 struct Produto {
@@ -20,7 +19,6 @@ struct Pessoa {
 	int tipoDeCarro;
 	int tempArCondicionado;
 };
-
 
 double transporteDeProdutos() {
 	Produto carga;
@@ -201,7 +199,7 @@ int main()
 		cin >> tipoDeServico;
 		
 		if (tipoDeServico != 1 && tipoDeServico != 2) {
-			cout << "Por favor, insira um serviço valido" << endl;
+			cout << "Por favor, insira um serviï¿½o valido" << endl;
 		}
 	} while (tipoDeServico != 1 && tipoDeServico != 2);
 
@@ -232,5 +230,3 @@ int main()
 
 	metodoDePagamento();
 }
-
-
