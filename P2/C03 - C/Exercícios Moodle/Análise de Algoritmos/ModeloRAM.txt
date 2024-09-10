@@ -1,0 +1,52 @@
+Questão 1 - Determine o custo de cada linha do código abaixo segundo o modelo RAM, e também o número de vezes que cada linha será executada, se n = 3.
+
+ 	                | custo	  |	# repetições
+i=0;	 	        |    1    |     1
+                    
+while(i < n) {	    |    3    |     4
+    cout >> i * 2;	|  	 3    |     3
+    i++;	 	    |    3    |     3
+}	 	 	 	 
+
+----------------------------------------------------------------------------------------------------------------
+
+Questão 2 - Determine o custo de cada linha do código abaixo segundo o modelo RAM, e também o número de vezes que cada linha será executada, se n = 16.
+
+ 	                | custo	  |	# repetições
+i=1;	 	        |    1    |      1
+                    
+while(i < n) {	    |    3    |      5
+    x = (i+1)*2;    |  	 4    |      4
+    i = i*2;	 	|    3    |      4
+}	 
+
+----------------------------------------------------------------------------------------------------------------
+
+Questão 3 - Determine o custo de cada linha do código abaixo segundo o modelo RAM, e também o número de vezes que cada linha será executada, se n = 32.
+
+ 	                | custo	  |	# repetições
+i=n;	 	        |    2    |      1
+                    
+while(i > 1) {	    |    2    |      6
+    y = (2*1+3)/i;	|  	 6    |      5
+    i = i/2;	 	|    3    |      5
+}	 
+
+----------------------------------------------------------------------------------------------------------------
+
+Questão 4 - Determine o custo de cada linha do código abaixo segundo o modelo RAM, e também o número de vezes que cada linha será executada, se n = 2.
+
+ 	                        | custo	  |	# repetições
+i=n;	 	                |    2    |      1
+                    
+while(i > 1) {	            |    2    |      2
+
+    j=0;                    |    1    |      1
+                            
+    while(j < n){           |    3    |      3
+        x = (3+i)*(2+j);    |    6    |      2
+        j++;                |    3    |      2
+    }                       
+    
+    i = i/2;	 	        |    3    |      1
+}	 
