@@ -15,7 +15,7 @@ int hash1(int k, int i, int m) {
 }
 
 int main() {
-    int result, k, m;
+    int k, m;
 
     cin >> k >> m;
 
