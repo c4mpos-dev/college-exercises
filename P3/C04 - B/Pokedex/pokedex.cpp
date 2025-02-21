@@ -96,7 +96,7 @@ int main() {
                 cout << "Saindo..." << endl; 
                 break;
             default: 
-                cout << "Opção invalida. Tente novamente." << endl;
+                cout << endl << "Opcao invalida. Tente novamente." << endl;
         }
     }
 
