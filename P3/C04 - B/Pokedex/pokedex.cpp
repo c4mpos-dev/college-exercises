@@ -63,7 +63,6 @@ int main() {
         exibirMenu();
         cin >> menu;
     
-
         switch (menu) {
             case 1: 
                 cadastrarCidade(); 
