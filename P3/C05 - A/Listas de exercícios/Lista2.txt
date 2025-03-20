@@ -1,0 +1,219 @@
+1 - São programas que convertem código escrito em uma linguagem de programação (código-fonte) para um formato compreensível pelo computador (código de máquina). Os tipos mais populares são os compiladores e interpretadores. Compiladores: traduzem todo o código-fonte para código de máquina antes da execução e geram um arquivo executável independente. Interpretadores: traduzem e executam o código linha por linha em tempo real e não geram arquivos executáveis, tornando a execução geralmente mais lenta. É mais utilizado na depuração de um programa.
+2 - Para isso, há duas estratégias básicas: Abortar e Recuperar. Abortar: interrompe a compilação em qualquer fase caso seja encontrado algum erro. Recuperar: ele tenta continuar a compilação, ignorando alguma coisa.
+
+3 - Análise léxica: o código-fonte é lido e convertido em tokens (unidades sintáticas, como palavras-chave, identificadores e operadores), ex: int x = 10; pode ser transformada nos tokens [int] [x] [=] [10] [;].
+    Análise sintática: verifica se a sequência de tokens segue a gramática da linguagem e constrói uma árvore sintática para representar a estrutura do programa.
+    Análise semântica: checa regras mais complexas, como tipagem de variáveis, escopo e coerência semântica, ex:  x = "teste" é inválido se x foi declarado como int.
+    Geração de código intermediário: o compilador transforma a árvore sintática em uma forma intermediária que não é nem código-fonte nem código de máquina final. A representação intermediária mais utilizada é a chamada Código de Três Endereços (Three Code Address).
+    Otimização de código: melhora a eficiência do código intermediário sem alterar sua funcionalidade. ex: otimização de laços, inibição de variáveis não utilizadas, etc.
+    Geração do código alvo: converte o código intermediário para código de máquina (assembly), pois esse código é específico para a arquitetura de computador.
+
+4 - É onde o programa é compilado em um host (Ex: PC) e é executado no target (Ex: Placa Arduino). Isso ocorre quando o target possui recursos de memória e armazenamento mais limitados. Então,  toda vez que você realiza o upload do Sketch pelo Arduino IDE, ocorre a compilação cruzada.
+5 - É onde o compilador tem o papel de converter o código fonte em código bytecode, que é uma linguagem de baixo nível. Ex: o compilador do Java, que em vez de gerar o código da máquina hospedeira, gera o código Java Bytecode que são interpretados por uma Máquina Virtual.
+
+6 - Essa teoria pode ser utilizada em diversas áreas da computação, algumas delas, são:
+    Análise de dados: algumas partes técnicas do processo de compilação são usadas para processar arquivos de configuração, interpretar comandos e validar dados.
+    Otimização de código e Tempo de Execução (Just-In-Time Compilation): são usadas técnicas de otimização do compilador, um exemplo é o Machine Learning.
+
+7 - <int, KW>
+    <main, ID>
+    <(, SP>
+    <), SP>
+    <{, SP>
+    <int, KW>
+    <x, ID>
+    <=, OP>
+    <-2, LT>
+    <,, SP>
+    <y, ID>
+    <=, OP>
+    <4, LT>
+    <;, SP>
+    <int, KW>
+    <z, ID>
+    <=, OP>
+    <x, ID>
+    <*, OP>
+    <y, ID>
+    <;, SP>
+    <printf, ID>
+    <(, SP>
+    <"Valor: %d", LC>
+    <,, SP>
+    <z, ID>
+    <), SP>
+    <;, SP>
+    <return, KW>
+    <0, LT>
+    <;, SP>
+    <}, SP> 
+
+8 - <public, KW>
+    <class, KW>
+    <MinhaClasse, ID>
+    <{, SP>
+    <public, KW>
+    <static, KW>
+    <double, KW>
+    <minhaFuncao, ID>
+    <(, SP>
+    <int, KW>
+    <n, ID>
+    <), SP>
+    <{, SP>
+    <double, KW>
+    <soma, ID>
+    <=, OP>
+    <0.0, LT>
+    <;, SP>
+    <for, KW>
+    <(, SP>
+    <int, KW>
+    <i, ID>
+    <=, OP>
+    <1, LT>
+    <;, SP>
+    <i, ID>
+    <<=, OP>
+    <n, ID>
+    <;, SP>
+    <i++, OP>
+    <), SP>
+    <{, SP>
+    <soma, ID>
+    <=, OP>
+    <soma, ID>
+    <+, OP>
+    <i, ID>
+    <;, SP>
+    <}, SP>
+    <return, KW>
+    <soma, ID>
+    <;, SP>
+    <}, SP>
+    <}, SP>
+
+9 - <using, KW>
+    <System, ID>
+    <;, OOP>
+    <class, KW>
+    <Programa, ID>
+    <{, OOP>
+    <static, KW>
+    <void, KW>
+    <Main, ID>
+    <(, OOP>
+    <), OOP>
+    <{, OOP>
+    <int, KW>
+    <numero, ID>
+    <=, OOP>
+    <10, LT>
+    <;, OOP>
+    <string, KW>
+    <mensagem, ID>
+    <=, OOP>
+    <"Olá", LT>
+    <;, OOP>
+    <if, KW>
+    <(, OOP>
+    <numero, ID>
+    <>, OOP>
+    <5, LT>
+    <), OOP>
+    <{, OOP>
+    <Console, ID>
+    <., OOP>
+    <WriteLine, ID>
+    <(, OOP>
+    <mensagem, ID>
+    <+, OOP>
+    <", C#!", LT>
+    <), OOP>
+    <;, OOP>
+    <}, OOP>
+    <for, KW>
+    <(, OOP>
+    <int, KW>
+    <i, ID>
+    <=, OOP>
+    <0, LT>
+    <;, OOP>
+    <i, ID>
+    <, OOP>
+    <3, LT>
+    <;, OOP>
+    <i, ID>
+    <++, OOP>
+    <), OOP>
+    <{, OOP>
+    <Console, ID>
+    <., OOP>
+    <Write, ID>
+    <(, OOP>
+    <i, ID>
+    <+, OOP>
+    <" ", LT>
+    <), OOP>
+    <;, OOP>
+    <}, OOP>
+    <}, OOP>
+    <}, OOP>
+
+10 - <contador, ID>
+    <=, OP>
+    <0, LT>
+    <def, KWH>
+    <funcao_exemplo, ID>
+    <(, DL>
+    <), DL>
+    <:, DL>
+    <global, KWH>
+    <contador, ID>
+    <contador, ID>
+    <+=, OP>
+    <1, LT>
+    <return, KWH>
+    <contador, ID>
+    <def, KWH>
+    <verificar_valor, ID>
+    <(, DL>
+    <valor, ID>
+    <), DL>
+    <:, DL>
+    <match, KWS>
+    <valor, ID>
+    <:, DL>
+    <case, KWS>
+    <1, LT>
+    <:, DL>
+    <resultado, ID>
+    <=, OP>
+    <"um", LT>
+    <case, KWS>
+    <2, LT>
+    <:, DL>
+    <resultado, ID>
+    <=, OP>
+    <"dois", LT>
+    <case, KWS>
+    <_, ID>
+    <:, DL>
+    <resultado, ID>
+    <=, OP>
+    <"outro", LT>
+    <return, KWH>
+    <resultado, ID>
+    <print, ID>
+    <(, DL>
+    <funcao_exemplo, ID>
+    <(, DL>
+    <), DL>
+    <), DL>
+    <print, ID>
+    <(, DL>
+    <verificar_valor, ID>
+    <(, DL>
+    <1, LT>
+    <), DL>
+    <), DL>
