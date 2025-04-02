@@ -3,8 +3,8 @@
 using namespace std;
 
 struct no {
-    int v;    
-    int peso; 
+    int v; // vértice adjacente
+    int peso; // peso da aresta
 };
 
 void cria_aresta(list<no> adj[], int u, int v, int p, int orientado) {
@@ -15,23 +15,26 @@ void cria_aresta(list<no> adj[], int u, int v, int p, int orientado) {
 }
 
 int main() {
-    int n, orientado;
-    cin >> n >> orientado;
-
-    list<no> adj[n];
-
-    int u, v, p;
-    while (cin >> u >> v >> p, u != -1 || v != -1 || p != -1) {
+    int N, orientado;
+    cin >> N >> orientado;
+    list<no> adj[N];
+    
+    while (true) {
+        int u, v, p;
+        cin >> u >> v >> p;
+        if (u == -1 && v == -1 && p == -1) break;
         cria_aresta(adj, u, v, p, orientado);
     }
-
-    for (int i = 0; i < n; i++) {
-        cout << i;
-        for (const no& aresta : adj[i]) {
-            cout << " " << aresta.v << " " << aresta.peso;
+    
+    int count = 0;
+    list<no>::iterator it;
+    for (int i = 0; i < N; i++) {
+        for (it = adj[i].begin(); it != adj[i].end(); ++it) {
+            if (count >= 1) cout << endl;
+            cout << i << " " << it->v << " " << it->peso;
+            count++;
         }
-        cout << endl;
     }
-
+    
     return 0;
 }
