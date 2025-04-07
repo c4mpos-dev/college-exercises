@@ -1,7 +1,7 @@
 ```cpp
 #define STUDENT "Cauã Campos"
 #define SUBJECT "Algoritmos e Estrutura de Dados II (C03)"
-#define PROFESSOR "Carlos Ynoguti"
+#define TEACHER "Carlos Ynoguti"
 #define SEMESTER "2024/2"
 ```
 

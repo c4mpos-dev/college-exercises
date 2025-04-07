@@ -1,7 +1,7 @@
 ```cpp
 #define STUDENT "Cauã Campos"
 #define SUBJECT "Algoritmos e Estrutura de Dados I (C02)"
-#define PROFESSOR "Edson Gimenez"
+#define TEACHER "Edson Gimenez"
 #define SEMESTER "2024/1"
 ```
 
