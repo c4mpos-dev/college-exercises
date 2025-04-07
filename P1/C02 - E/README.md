@@ -1,4 +1,9 @@
-# 📌 Algoritmos e Estrutura de Dados I (C02) - Inatel
+```cpp
+#define STUDENT "Cauã Campos"
+#define SUBJECT "Algoritmos e Estrutura de Dados I (C02)"
+#define PROFESSOR "Edson Gimenez"
+#define SEMESTER "2024/1"
+```
 
 ## 📚 Conteúdo Programático
 A disciplina cobre os seguintes tópicos:

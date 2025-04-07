@@ -1,4 +1,9 @@
-# 📌 Algoritmos e Estrutura de Dados II (C03) - Inatel
+```cpp
+#define STUDENT "Cauã Campos"
+#define SUBJECT "Algoritmos e Estrutura de Dados II (C03)"
+#define PROFESSOR "Carlos Ynoguti"
+#define SEMESTER "2024/2"
+```
 
 ## 📚 Conteúdo Programático
 A disciplina cobre os seguintes tópicos:
