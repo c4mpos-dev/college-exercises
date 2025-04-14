@@ -7,7 +7,8 @@
 using namespace std;
 
 struct no {
-    int v;
+    int origem;
+    int destino;
     int peso;
 };
 
@@ -28,7 +29,7 @@ int prim(list<no> adj[], int nVertices) {
         intree[v] = true;
 
         for (auto it = adj[v].begin(); it != adj[v].end(); it++) {
-            int destino = it->v;
+            int destino = it->destino;
             int peso = it->peso;
             if (!intree[destino] && distance[destino] > peso) {
                 distance[destino] = peso;
@@ -58,26 +59,29 @@ int prim(list<no> adj[], int nVertices) {
 }
 
 int main() {
-    int N, M;
+    int N, M, origem, destino, peso;
     cin >> N >> M;
 
     list<no> adj[MAX_V];
 
     for (int i = 0; i < M; i++) {
-        int u, v, c;
-        cin >> u >> v >> c;
-        u--; // ajusta o indice para 0
-        v--; // ajusta o indice para 0
+        cin >> origem >> destino >> peso;
 
-        no a;
-        a.v = v;
-        a.peso = c;
-        adj[u].push_back(a);
+        /*
+            A entrada tem vértices numerados de 1 até N:
 
-        no b;
-        b.v = u;
-        b.peso = c;
-        adj[v].push_back(b); // nao orientado
+                1 2 5
+                2 3 4
+
+            Porém o código usa vetores com índices começando do 0, como adj[0], adj[1], ..., adj[N-1], então precisa ajustar os índices da entrada para caber no array.
+
+            Ou seja:
+
+                O vértice 1 da entrada vira o índice 0 no array adj[]
+                O vértice 2 vira o índice 1
+        */
+        adj[origem - 1].push_back({origem - 1, destino - 1, peso}); 
+        adj[destino - 1].push_back({destino - 1, origem - 1, peso});
     }
 
     int custo = prim(adj, N);
