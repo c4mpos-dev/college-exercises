@@ -5,39 +5,46 @@
 
 using namespace std;
 
+// Agora o struct contém tanto a origem quanto o destino
 struct no {
+    int origem;
     int v;
     int peso;
 };
 
 void prim(list<no> adj[], int nVertices, int start) {
-    // considerar que o grafo terá no máximo 10 vértices (colocar 11 por segurança)
-    bool intree[11];
-    int distance[11];
-    int parent[11];
+    // Arrays auxiliares para controlar o estado dos vértices
+    bool intree[11];      // indica se o vértice já foi incluído na MST
+    int distance[11];     // armazena o menor peso para conectar cada vértice à árvore
+    int parent[11];       // armazena o pai de cada vértice na MST
 
+    // Inicialização dos vetores
     for (int u = 0; u < nVertices; u++) {
-        intree[u] = false;
-        distance[u] = INF;
-        parent[u] = -1;
+        intree[u] = false;        // Nenhum vértice foi visitado ainda
+        distance[u] = INF;        // Distância infinita inicialmente
+        parent[u] = -1;           // Sem pai (ainda não está conectado)
     }
 
-    distance[start] = 0;
+    distance[start] = 0;   // Começa do vértice inicial
     int v = start;
 
+    // Enquanto ainda houver vértices fora da árvore
     while (!intree[v]) {
-        intree[v] = true;
+        intree[v] = true;  // Inclui o vértice atual na árvore
 
-        // auto reconhece o tipo da variavel it (iterador na lista de no)
+        // Percorre todos os vizinhos de 'v'
         for (auto it = adj[v].begin(); it != adj[v].end(); it++) {
             int destino = it->v;
             int peso = it->peso;
+
+            // Se o vizinho ainda não está na árvore E o peso da aresta for menor que o atual
             if (!intree[destino] && distance[destino] > peso) {
-                distance[destino] = peso;
-                parent[destino] = v;
+                distance[destino] = peso;   // Atualiza a menor distância para esse vizinho
+                parent[destino] = v;        // Define 'v' como o pai desse vizinho
             }
         }
 
+        // Escolhe o próximo vértice: o que tem a menor distância e ainda não está na árvore
         int dist = INF;
         v = -1;
         for (int u = 0; u < nVertices; u++) {
@@ -47,16 +54,18 @@ void prim(list<no> adj[], int nVertices, int start) {
             }
         }
 
+        // Se não achou nenhum vértice, termina o loop
         if (v == -1)
             break;
     }
 
+    // Imprime os resultados: arestas da MST e o custo total
     int custoTotal = 0;
     cout << "Arvore Geradora Minima:" << endl;
     for (int i = 0; i < nVertices; i++) {
         if (parent[i] != -1) {
-            cout << parent[i] << " " << i << endl;
-            custoTotal += distance[i];
+            cout << parent[i] << " " << i << endl;   // aresta: pai -> filho
+            custoTotal += distance[i];               // soma os pesos das arestas usadas
         }
     }
     cout << "Custo: " << custoTotal << endl;
@@ -74,14 +83,10 @@ int main() {
         if (origem == -1 && destino == -1 && peso == -1)
             break;
 
-        no aux;
-        aux.v = destino;
-        aux.peso = peso;
-        adj[origem].push_back(aux);
+        adj[origem].push_back({origem, destino, peso});
 
         if (!orientado) {
-            aux.v = origem;
-            adj[destino].push_back(aux);
+            adj[destino].push_back({destino, origem, peso});
         }
     }
 
