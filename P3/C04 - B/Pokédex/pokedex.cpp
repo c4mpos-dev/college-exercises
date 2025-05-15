@@ -16,6 +16,13 @@ struct Cidade {
     list<Estrada> vizinha;
 };
 
+struct Pokemon {
+    string nome;
+    string tipo;
+    int numero;
+    int x, y; // localizacao no mapa
+};
+
 void cadastrarCidades(Cidade cidade[], int &totalCidades) {
     if (totalCidades >= INF) {
         cout << "Erro: Limite maximo de cidades atingido!" << endl;
@@ -161,8 +168,26 @@ void buscarCentroPokemonProximo(Cidade cidade[], int totalCidades) {
 	cout << endl << "Nenhum Centro Pokemon acessivel a partir dessa cidade." << endl;
 }
 
-void cadastrarPokemon() {
-    cout << "Pokemon cadastrado!" << endl;
+void cadastrarPokemon(Pokemon pokemons[], int &totalPokemons) {
+    if (totalPokemons >= INF) {
+        cout << "Erro: Limite maximo de pokemons atingido!" << endl;
+        return;
+    }
+
+    cout << "Nome do Pokemon: ";
+    getline(cin >> ws, pokemons[totalPokemons].nome);
+
+    cout << "Tipo do Pokemon: ";
+    getline(cin >> ws, pokemons[totalPokemons].tipo);
+
+    cout << "Numero na Pokedex: ";
+    cin >> pokemons[totalPokemons].numero;
+
+    cout << "Localizacao no mapa (x y): ";
+    cin >> pokemons[totalPokemons].x >> pokemons[totalPokemons].y;
+
+    totalPokemons++;
+    cout << endl << "Pokemon cadastrado com sucesso!" << endl;
 }
 
 void removerPokemon() {
@@ -204,7 +229,9 @@ void exibirMenu() {
 
 int main() {
     Cidade cidade[INF];
-    int totalCidades = 0, totalEstradas = 0;
+    Pokemon pokemons[INF];
+
+    int totalCidades = 0, totalEstradas = 0, totalPokemons = 0;;
     int opcao;
 
     do {
@@ -216,7 +243,7 @@ int main() {
             case 1: cadastrarCidades(cidade, totalCidades); break;
             case 2: cadastrarEstradas(cidade, totalCidades, totalEstradas); break;
             case 3: buscarCentroPokemonProximo(cidade, totalCidades); break;
-            case 4: cadastrarPokemon(); break;
+            case 4: cadastrarPokemon(pokemons, totalPokemons); break;
             case 5: removerPokemon(); break;
             case 6: listarPokemonsPorNome(); break;   
             case 7: listarPokemonsPorTipo(); break;   
@@ -228,6 +255,16 @@ int main() {
             default: cout << "Opcao invalida. Tente novamente." << endl;
         }
     } while (opcao != 0);
+
+    // imprimir para mostrar na hora de avaliar
+    cout << endl << "Pokemons cadastrados:" << endl;
+    for (int i = 0; i < totalPokemons; i++) {
+        cout << "Nome: " << pokemons[i].nome << endl;
+        cout << "Tipo: " << pokemons[i].tipo << endl;
+        cout << "Numero: " << pokemons[i].numero << endl;
+        cout << "Localizacao: (" << pokemons[i].x << ", " << pokemons[i].y << ")" << endl;
+        cout << "-----------------------------" << endl;
+    }
 
     return 0;
 }
