@@ -1,6 +1,7 @@
 #include <iostream>
 #include <list>
 #include <algorithm>
+#include <cmath>
 
 #define INF 9999 // Limite maximo de cidades, estradas e pokemons
 
@@ -370,8 +371,35 @@ void contarPokemonsPorTipo() {
 }
 // --------------------------------------------------------
 
+int contarProximos(Node* root, int px, int py) {
+    if (!root) return 0;
+
+    int count = 0;
+
+    double dist = sqrt(pow(root->info.x - px, 2) + pow(root->info.y - py, 2));
+    if (dist <= 100.0) {
+        cout << "- " << root->info.nome << " (distancia: " << dist << ")\n";
+        count++;
+    }
+
+    count += contarProximos(root->left, px, py);
+    count += contarProximos(root->right, px, py);
+
+    return count;
+}
+
 void encontrarPokemonsProximos() {
-    cout << "Pokemons proximos encontrados!" << endl;
+    int x, y;
+    cout << "Digite sua localizacao atual (x y): ";
+    cin >> x >> y;
+
+    cout << "\nPokemons encontrados em um raio de 100 metros:\n";
+    int total = contarProximos(rootNome, x, y);
+
+    if (total == 0)
+        cout << "Nenhum Pokemon encontrado no raio de 100 metros.\n";
+    else
+        cout << "\nTotal encontrados: " << total << "\n";
 }
 
 // Funcao para exibir menu (Main clean)
