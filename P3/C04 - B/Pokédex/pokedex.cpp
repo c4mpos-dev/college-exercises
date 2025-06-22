@@ -1,7 +1,8 @@
 #include <iostream>
 #include <list>
+#include <algorithm>
 
-#define INF 9999 // Limite máximo de cidades
+#define INF 9999 // Limite maximo de cidades, estradas e pokemons
 
 using namespace std;
 
@@ -17,11 +18,18 @@ struct Cidade {
 };
 
 struct Pokemon {
-    string nome;
-    string tipo;
+    string nome, tipo;
     int numero;
     int x, y; // localizacao no mapa
 };
+
+struct Node {
+    Pokemon info;
+    Node *left, *right;
+};
+
+Node* rootNome = NULL;
+Node* rootTipo = NULL;
 
 void cadastrarCidades(Cidade cidade[], int &totalCidades) {
     if (totalCidades >= INF) {
@@ -31,10 +39,13 @@ void cadastrarCidades(Cidade cidade[], int &totalCidades) {
 
     cout << "Nome da cidade: ";
     getline(cin >> ws, cidade[totalCidades].nome);
+
     cout << "Codigo da cidade: ";
     cin >> cidade[totalCidades].codigo;
+
     cout << "Tem centro Pokemon? [0]Nao [1]Sim: ";
     cin >> cidade[totalCidades].centroPokemon;
+
     cout << endl;
 
     totalCidades++;
@@ -168,43 +179,196 @@ void buscarCentroPokemonProximo(Cidade cidade[], int totalCidades) {
 	cout << endl << "Nenhum Centro Pokemon acessivel a partir dessa cidade." << endl;
 }
 
-void cadastrarPokemon(Pokemon pokemons[], int &totalPokemons) {
-    if (totalPokemons >= INF) {
-        cout << "Erro: Limite maximo de pokemons atingido!" << endl;
+
+// Funcoes que fazem a parte de cadastrar/inserir Pokemons nas duas árvores (por nome e por tipo)
+string toLower(const string& s) {
+    string res = s;
+    transform(res.begin(), res.end(), res.begin(), ::tolower);
+    return res;
+}
+
+void insertPokemon(Node*& root, Pokemon p, bool porNome) {
+    if (root == NULL) {
+        root = new Node{p, NULL, NULL};
+    } else {
+        string a = porNome ? toLower(p.nome) : toLower(p.tipo);
+        string b = porNome ? toLower(root->info.nome) : toLower(root->info.tipo);
+        if (a < b)
+            insertPokemon(root->left, p, porNome);
+        else
+            insertPokemon(root->right, p, porNome);
+    }
+}
+
+bool existeNome(Node* root, const string& nome) {
+    while (root != NULL) {
+        if (nome == root->info.nome) 
+            return true;
+        else if 
+            (nome < root->info.nome) root = root->left;
+        else 
+            root = root->right;
+    }
+
+    return false;
+}
+
+bool existeNumero(Node* root, int numero) {
+    if (!root) 
+        return false;
+
+    if (root->info.numero == numero) 
+        return true;
+
+    return existeNumero(root->left, numero) || existeNumero(root->right, numero);
+}
+
+void cadastrarPokemon() {
+    Pokemon p;
+
+    cout << "Nome do Pokemon: ";
+    getline(cin >> ws, p.nome);
+
+    if (existeNome(rootNome, p.nome)) {
+        cout << endl << "Erro: Ja existe um Pokemon com esse nome!" << endl;
         return;
     }
 
-    cout << "Nome do Pokemon: ";
-    getline(cin >> ws, pokemons[totalPokemons].nome);
-
     cout << "Tipo do Pokemon: ";
-    getline(cin >> ws, pokemons[totalPokemons].tipo);
+    getline(cin >> ws, p.tipo);
 
     cout << "Numero na Pokedex: ";
-    cin >> pokemons[totalPokemons].numero;
+    cin >> p.numero;
+
+    if (existeNumero(rootNome, p.numero)) {
+        cout << endl << "Erro: Ja existe um Pokemon com esse numero na Pokedex!" << endl;
+        return;
+    }
 
     cout << "Localizacao no mapa (x y): ";
-    cin >> pokemons[totalPokemons].x >> pokemons[totalPokemons].y;
+    cin >> p.x >> p.y;
 
-    totalPokemons++;
+    insertPokemon(rootNome, p, true);
+    insertPokemon(rootTipo, p, false);
+
     cout << endl << "Pokemon cadastrado com sucesso!" << endl;
 }
 
+// --------------------------------------------------------
+
+
+// Funcoes que fazem a parte de remover Pokemons das duas árvores (por nome)
+Node* remove(Node* root, string valor, bool porNome, bool& removido) {
+    if (!root) return NULL;
+
+    if ((porNome && valor < root->info.nome) || (!porNome && valor < root->info.tipo)) {
+        root->left = remove(root->left, valor, porNome, removido);
+    } else if ((porNome && valor > root->info.nome) || (!porNome && valor > root->info.tipo)) {
+        root->right = remove(root->right, valor, porNome, removido);
+    } else {
+        removido = true;
+        if (!root->left) {
+            Node* temp = root->right;
+            delete root;
+            return temp;
+        } else if (!root->right) {
+            Node* temp = root->left;
+            delete root;
+            return temp;
+        }
+        Node* succ = root->right;
+        while (succ->left) succ = succ->left;
+        root->info = succ->info;
+        root->right = remove(root->right, porNome ? succ->info.nome : succ->info.tipo, porNome, removido);
+    }
+
+    return root;
+}
+
+string buscarTipoPorNome(Node* root, const string& nome) {
+    while (root != NULL) {
+        if (nome == root->info.nome) {
+            return root->info.tipo;
+        } else if (nome < root->info.nome) {
+            root = root->left;
+        } else {
+            root = root->right;
+        }
+    }
+
+    return "";
+}
+
 void removerPokemon() {
-    cout << "Pokemon removido!" << endl;
-}
+    string nome;
+    cout << "Qual pokemon voce deseja remover? ";
+    getline(cin >> ws, nome);
 
-void listarPokemonsPorNome() {
-    cout << "Pokemons listados por nome!" << endl;
-}
+    // Busca o tipo do Pokémon pelo nome
+    string tipo = buscarTipoPorNome(rootNome, nome);
 
-void listarPokemonsPorTipo() {
-    cout << "Pokemons listados por tipo!" << endl;
+    if (tipo == "") {
+        cout << "Pokemon nao encontrado!" << endl;
+        return;
+    }
+
+    // Remove nas duas árvores
+    bool removidoNome = false, removidoTipo = false;
+    rootNome = remove(rootNome, nome, true, removidoNome);
+    rootTipo = remove(rootTipo, tipo, false, removidoTipo);
+
+    if (removidoNome && removidoTipo)
+        cout << "Pokemon removido com sucesso!" << endl;
+    else
+        cout << "Erro ao remover Pokemon!" << endl;
+}
+// --------------------------------------------------------
+
+
+// Funcao que faz a parte de listar Pokemons em ordem alfabetica (por tipo ou nome)
+void listarPokemon(Node* root, bool porNome) {
+    if (root != NULL) {
+        listarPokemon(root->left, porNome);
+
+        cout << "Nome: " << root->info.nome << endl;
+        cout << "Tipo: " << root->info.tipo << endl;
+        cout << "Numero: " << root->info.numero << endl;
+        cout << "Localizacao: (" << root->info.x << ", " << root->info.y << ")" << endl;
+        cout << "-------------------------" << endl;
+
+        listarPokemon(root->right, porNome);
+    }
+}
+// --------------------------------------------------------
+
+
+// Funcoes que fazem a parte de contar Pokemons por tipo
+int contarPorTipo(Node* root, const string& tipo) {
+    if (!root) return 0;
+
+    int count = 0;
+    if (root->info.tipo == tipo) 
+        count++;
+
+    return count + contarPorTipo(root->left, tipo) + contarPorTipo(root->right, tipo);
 }
 
 void contarPokemonsPorTipo() {
-    cout << "Pokemons do tipo X contados!" << endl;
+    string tipo;
+
+    cout << "Insira o tipo de pokemon desejado: ";
+    getline(cin >> ws, tipo);
+    
+    int qtd = contarPorTipo(rootTipo, tipo);
+
+    cout << endl;
+
+    if (qtd == 1)
+        cout << "Existe " << qtd << " Pokemon do tipo " << tipo << "!" << endl;
+    else
+        cout << "Existem " << qtd << " Pokemons do tipo " << tipo << "!" << endl;
 }
+// --------------------------------------------------------
 
 void encontrarPokemonsProximos() {
     cout << "Pokemons proximos encontrados!" << endl;
@@ -221,7 +385,7 @@ void exibirMenu() {
     cout << "[5] Remover Pokemon" << endl;
     cout << "[6] Listar Pokemons (ordem alfabetica de nome)" << endl;
     cout << "[7] Listar Pokemons (ordem alfabetica de tipo)" << endl;
-    cout << "[8] Contar Pokemons de cada tipo" << endl;
+    cout << "[8] Contar Pokemons por tipo" << endl;
     cout << "[9] Encontrar Pokemons proximos" << endl;
     cout << endl << "[0] Sair" << endl;
     cout << endl << "Escolha uma opcao: ";
@@ -231,7 +395,7 @@ int main() {
     Cidade cidade[INF];
     Pokemon pokemons[INF];
 
-    int totalCidades = 0, totalEstradas = 0, totalPokemons = 0;;
+    int totalCidades = 0, totalEstradas = 0;
     int opcao;
 
     do {
@@ -243,11 +407,11 @@ int main() {
             case 1: cadastrarCidades(cidade, totalCidades); break;
             case 2: cadastrarEstradas(cidade, totalCidades, totalEstradas); break;
             case 3: buscarCentroPokemonProximo(cidade, totalCidades); break;
-            case 4: cadastrarPokemon(pokemons, totalPokemons); break;
+            case 4: cadastrarPokemon(); break;
             case 5: removerPokemon(); break;
-            case 6: listarPokemonsPorNome(); break;   
-            case 7: listarPokemonsPorTipo(); break;   
-            case 8: contarPokemonsPorTipo(); break;    
+            case 6: listarPokemon(rootNome, true); break;
+            case 7: listarPokemon(rootTipo, false); break;
+            case 8: contarPokemonsPorTipo(); break;  
             case 9: encontrarPokemonsProximos(); break;
 
             case 0: cout << "Saindo..." << endl; break;
@@ -255,16 +419,6 @@ int main() {
             default: cout << "Opcao invalida. Tente novamente." << endl;
         }
     } while (opcao != 0);
-
-    // imprimir para mostrar na hora de avaliar
-    cout << endl << "Pokemons cadastrados:" << endl;
-    for (int i = 0; i < totalPokemons; i++) {
-        cout << "Nome: " << pokemons[i].nome << endl;
-        cout << "Tipo: " << pokemons[i].tipo << endl;
-        cout << "Numero: " << pokemons[i].numero << endl;
-        cout << "Localizacao: (" << pokemons[i].x << ", " << pokemons[i].y << ")" << endl;
-        cout << "-----------------------------" << endl;
-    }
 
     return 0;
 }
