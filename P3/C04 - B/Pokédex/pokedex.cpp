@@ -2,6 +2,8 @@
 #include <list>
 #include <algorithm>
 #include <cmath>
+#include <stack>
+#include <climits>
 
 #define INF 9999 // Limite maximo de cidades, estradas e pokemons
 
@@ -33,7 +35,7 @@ Node* rootNome = NULL;
 Node* rootTipo = NULL;
 
 void cadastrarCidades(Cidade cidade[], int &totalCidades) {
-    if (totalCidades >= INF) {
+    if (totalCidades >= INT_MAX) {
         cout << "Erro: Limite maximo de cidades atingido!" << endl;
         return;
     }
@@ -92,93 +94,109 @@ void cadastrarEstradas(Cidade cidade[], int totalCidades, int &totalEstradas) {
     cout << endl << "Estrada cadastrada!" << endl;
 }
 
-void buscarCentroPokemonProximo(Cidade cidade[], int totalCidades) {
-	if (totalCidades == 0) {
-		cout << "Erro: Cadastre cidades antes!" << endl;
-		return;
-	}
 
-	int codigoAtual;
-	cout << "Digite o codigo da sua cidade atual: ";
-	cin >> codigoAtual;
+// Funcao que faz a parte de buscar o centro Pokemon mais proximo (com Dijkstra)
+void buscarCentroPokemonProximo(Cidade cidades[], int totalCidades) {
+    if (totalCidades == 0) {
+        cout << "Erro: Cadastre cidades antes!" << endl;
+        return;
+    }
 
-	// Verifica se o código da cidade atual existe e qual é
-	int cidadeAtual = -1;
-	for (int i = 0; i < totalCidades; i++) {
-		if (cidade[i].codigo == codigoAtual) {
-			cidadeAtual = i;
-			break;
-		}
-	}
+    int codAtual;
+    cout << "Digite o codigo da sua cidade atual: ";
+    cin >> codAtual;
 
-	// Se não existir, retorna erro e cancela a busca
-	if (cidadeAtual == -1) {
-		cout << endl << "Erro: Cidade nao encontrada!" << endl;
-		return;
-	}
+    int origem = -1;
+    for (int i = 0; i < totalCidades; i++) {
+        if (cidades[i].codigo == codAtual) {
+            origem = i;
+            break;
+        }
+    }
 
-	// Fila BFS iniciada e cidade inicial salva como visitada
-	list<int> fila;
-	bool visitada[INF] = {false};
-	int pai[INF];
-	for (int i = 0; i < INF; i++) pai[i] = -1;
+    if (origem == -1) {
+        cout << "Erro: Cidade nao encontrada!" << endl;
+        return;
+    }
 
-	fila.push_back(cidadeAtual);
-	visitada[cidadeAtual] = true;
+    bool intree[INF];
+    int distance[INF], parent[INF];
 
-	// Enquanto houver cidades na fila, faz a busca
-	while (!fila.empty()) {
-		// Cidade atual (frente da fila)
-		int atual = fila.front();
-		fila.pop_front();
+    for (int i = 0; i < totalCidades; i++) {
+        intree[i] = false;
+        distance[i] = INT_MAX;
+        parent[i] = -1;
+    }
 
-		// Verifica se a cidade atual (da frente da fila tem centro pokemon), fica na parte de cima pois se a cidade que o user está tiver centro pokemon, nem precisa ser feita a busca
-		if (cidade[atual].centroPokemon) {
-			cout << endl << "Centro Pokemon mais proximo esta na cidade: " << cidade[atual].nome << "." << endl;
+    distance[origem] = 0;
+    int v = origem;
 
-			// Reconstroi o caminho a partir do vetor de pais
-			int caminho[INF];
-			int tam = 0;
-			int temp = atual;
+    while (!intree[v]) {
+        intree[v] = true;
 
-			while (temp != -1) {
-				caminho[tam++] = temp;
-				temp = pai[temp];
-			}
+        for (auto it = cidades[v].vizinha.begin(); it != cidades[v].vizinha.end(); ++it) {
+            int destino = -1;
+            for (int j = 0; j < totalCidades; j++) {
+                if (cidades[j].codigo == it->destino) {
+                    destino = j;
+                    break;
+                }
+            }
 
-			cout << "Caminho percorrido: ";
-			for (int i = tam - 1; i >= 0; i--) {
-				cout << cidade[caminho[i]].nome;
-				if (i != 0) cout << " -> ";
-			}
-			cout << endl;
+            if (destino != -1 && distance[destino] > distance[v] + it->peso) {
+                distance[destino] = distance[v] + it->peso;
+                parent[destino] = v;
+            }
+        }
 
-			return;
-		}
+        // Encontrar proximo vertice com menor distancia
+        int menorDist = INT_MAX;
+        v = -1;
+        for (int i = 0; i < totalCidades; i++) {
+            if (!intree[i] && distance[i] < menorDist) {
+                menorDist = distance[i];
+                v = i;
+            }
+        }
 
-		// Percorrer as estradas dessa cidade
-		// O auto detecta o tipo da variável automaticamente, sem precisar declarar o iterador (nao funciona no falcon)
-		for (auto it = cidade[atual].vizinha.begin(); it != cidade[atual].vizinha.end(); ++it) {
-			// Tenta encontrar o código da cidade destino, verificando se o codigo informado no cadastro das estradas existem
-			int destino = -1;
-			for (int i = 0; i < totalCidades; i++) {
-				if (cidade[i].codigo == it->destino) {
-					destino = i;
-					break;
-				}
-			}
+        if (v == -1) break; // Todos os caminhos acessiveis foram visitados
+    }
 
-			// Se destino for válido e não tiver sido visitado, marca como visitado para evitar loops infinitos e mais processamentos
-			if (destino != -1 && !visitada[destino]) {
-				visitada[destino] = true;
-				pai[destino] = atual;
-				fila.push_back(destino);
-			}
-		}
-	}
+    // Procurar o centro Pokemon mais próximo
+    int cidadeCentro = -1;
+    int menorDistCentro = INT_MAX;
 
-	cout << endl << "Nenhum Centro Pokemon acessivel a partir dessa cidade." << endl;
+    for (int i = 0; i < totalCidades; i++) {
+        if (cidades[i].centroPokemon && distance[i] < menorDistCentro) {
+            menorDistCentro = distance[i];
+            cidadeCentro = i;
+        }
+    }
+
+    if (cidadeCentro == -1) {
+        cout << "Nenhum Centro Pokemon acessivel a partir dessa cidade." << endl;
+        return;
+    }
+
+    // Reconstruir caminho com stack
+    stack<int> caminho;
+    int atual = cidadeCentro;
+    while (atual != origem) {
+        caminho.push(atual);
+        atual = parent[atual];
+    }
+
+    cout << endl << "Centro Pokemon mais proximo esta na cidade: " << cidades[cidadeCentro].nome << endl;
+    cout << "Distancia total: " << menorDistCentro << endl;
+    cout << "Caminho percorrido: " << cidades[origem].nome;
+
+    while (!caminho.empty()) {
+        cout << " -> " << cidades[caminho.top()].nome;
+        caminho.pop();
+    }
+    cout << endl;
 }
+// --------------------------------------------------------
 
 
 // Funcoes que fazem a parte de cadastrar/inserir Pokemons nas duas árvores (por nome e por tipo)
@@ -254,7 +272,6 @@ void cadastrarPokemon() {
 
     cout << endl << "Pokemon cadastrado com sucesso!" << endl;
 }
-
 // --------------------------------------------------------
 
 
@@ -301,6 +318,11 @@ string buscarTipoPorNome(Node* root, const string& nome) {
 }
 
 void removerPokemon() {
+    if (rootNome == NULL) {
+        cout << "Nenhum Pokemon cadastrado!" << endl;
+        return;
+    }
+
     string nome;
     cout << "Qual pokemon voce deseja remover? ";
     getline(cin >> ws, nome);
@@ -327,7 +349,12 @@ void removerPokemon() {
 
 
 // Funcao que faz a parte de listar Pokemons em ordem alfabetica (por tipo ou nome)
-void listarPokemon(Node* root, bool porNome) {
+void listarPokemon(Node* root, bool porNome) { 
+    if (rootNome == NULL) {
+        cout << "Nenhum Pokemon cadastrado!" << endl;
+        return;
+    }
+
     if (root != NULL) {
         listarPokemon(root->left, porNome);
 
@@ -355,6 +382,11 @@ int contarPorTipo(Node* root, const string& tipo) {
 }
 
 void contarPokemonsPorTipo() {
+    if (rootTipo == NULL) {
+        cout << "Nenhum Pokemon cadastrado!" << endl;
+        return;
+    }
+
     string tipo;
 
     cout << "Insira o tipo de pokemon desejado: ";
@@ -371,36 +403,43 @@ void contarPokemonsPorTipo() {
 }
 // --------------------------------------------------------
 
-int contarProximos(Node* root, int px, int py) {
+// Funcao que faz a parte de encontrar Pokemons proximos (dentro de um raio de 100 metros)
+int pokemonsProximos(Node* root, int px, int py) {
     if (!root) return 0;
 
     int count = 0;
 
     double dist = sqrt(pow(root->info.x - px, 2) + pow(root->info.y - py, 2));
     if (dist <= 100.0) {
-        cout << "- " << root->info.nome << " (distancia: " << dist << ")\n";
+        cout << "- " << root->info.nome << " (distancia: " << dist << "m)" << endl;
         count++;
     }
 
-    count += contarProximos(root->left, px, py);
-    count += contarProximos(root->right, px, py);
+    count += pokemonsProximos(root->left, px, py);
+    count += pokemonsProximos(root->right, px, py);
 
     return count;
 }
 
 void encontrarPokemonsProximos() {
+    if (rootNome == NULL) {
+        cout << "Nenhum Pokemon cadastrado!" << endl;
+        return;
+    }
+
     int x, y;
     cout << "Digite sua localizacao atual (x y): ";
     cin >> x >> y;
 
     cout << "\nPokemons encontrados em um raio de 100 metros:\n";
-    int total = contarProximos(rootNome, x, y);
+    int total = pokemonsProximos(rootNome, x, y);
 
     if (total == 0)
         cout << "Nenhum Pokemon encontrado no raio de 100 metros.\n";
     else
         cout << "\nTotal encontrados: " << total << "\n";
 }
+// --------------------------------------------------------
 
 // Funcao para exibir menu (Main clean)
 void exibirMenu() {
