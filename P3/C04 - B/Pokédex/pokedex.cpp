@@ -41,10 +41,42 @@ void cadastrarCidades(Cidade cidade[], int &totalCidades) {
     }
 
     cout << "Nome da cidade: ";
-    getline(cin >> ws, cidade[totalCidades].nome);
+    // Verifica se o nome ja foi cadastrado
+    bool nomeExistente = false;
+    string nome;
+    getline(cin >> ws, nome);
+    for (int i = 0; i < totalCidades; i++) {
+        if (cidade[i].nome == nome) {
+            nomeExistente = true;
+            break;
+        }
+    }
+
+    if (nomeExistente) {
+        cout << "Erro: Cidade ja cadastrada! Tente novamente." << endl;
+        return;
+    }
+
+    cidade[totalCidades].nome = nome;
 
     cout << "Codigo da cidade: ";
-    cin >> cidade[totalCidades].codigo;
+    // Verifica se o codigo ja foi cadastrado
+    bool codigoExistente = false;
+    int codigo;
+    cin >> codigo;
+    for (int i = 0; i < totalCidades; i++) {
+        if (cidade[i].codigo == codigo) {
+            codigoExistente = true;
+            break;
+        }
+    }
+
+    if (codigoExistente) {
+        cout << "Erro: Codigo ja cadastrado! Tente novamente." << endl;
+        return;
+    }
+
+    cidade[totalCidades].codigo = codigo;
 
     cout << "Tem centro Pokemon? [0]Nao [1]Sim: ";
     cin >> cidade[totalCidades].centroPokemon;
@@ -74,6 +106,12 @@ void cadastrarEstradas(Cidade cidade[], int totalCidades, int &totalEstradas) {
     cout << endl;
 
     cin >> origem >> destino >> peso;
+
+    // Verifica se origem nao é igual destino
+    if (origem == destino) {
+        cout << "Erro: A origem nao pode ser igual ao destino!" << endl;
+        return;
+    }
 
     int idxOrigem = -1, idxDestino = -1;
 
