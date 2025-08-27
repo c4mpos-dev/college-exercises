@@ -1,0 +1,56 @@
+body {
+    margin: 0px;
+}
+
+header {
+    position: relative;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: red;
+    padding: 30px;
+    display: block;
+}
+
+#menu {
+    width: 50px;
+    background-color: blue;
+    padding: 10px;
+    position: absolute;
+    left: 0px;
+    top: 10px;
+}
+
+#perfil {
+    width: 50px;
+    background-color: green;
+    padding: 10px;
+    position: absolute;
+    right: 0px;
+    top: 10px;
+}
+
+#user_name {
+    display: block;
+    font-size: 20pt;
+    padding: 5px;
+}
+
+#mns_box {
+    position: relative;
+    background-color: green;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    padding: 10px;
+}
+
+#icon {
+    padding: 5px;
+    display: inline;
+}
+
+#mns {
+    padding: 5px;
+    display: inline;
+}
