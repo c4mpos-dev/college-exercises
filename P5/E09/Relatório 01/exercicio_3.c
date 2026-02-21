@@ -1,3 +1,5 @@
+// Cauã Campos de Souza e Silva - 651 - GES
+
 #include <stdio.h>
 
 void analisarNumeros(int a, int b, int c, int d, int e) {
