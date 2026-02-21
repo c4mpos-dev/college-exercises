@@ -17,11 +17,14 @@ O repositório está organizado da seguinte maneira:
 ## 📝 Disciplinas 
 - (P1) C02 ➡️ Algoritmos e Estrutura de Dados I
 - (P2) C03 ➡️ Algoritmos e Estrutura de Dados II
+  
 - (P3) C04 ➡️ Algoritmos e Estrutura de Dados III
 - (P3) C05 ➡️ Linguagens de Programação e Compiladores
 
 - (P4) S01 ➡️ Paradigmas da Programação
 - (P4) S05 ➡️ Interação Homem Máquina
+
+- (P5) E09 ➡️ Sistemas Microcontrolados e Microprocessados
 
 ---
 
