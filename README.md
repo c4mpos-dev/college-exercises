@@ -25,6 +25,7 @@ O repositório está organizado da seguinte maneira:
 - (P4) S05 ➡️ Interação Homem Máquina
 
 - (P5) E09 ➡️ Sistemas Microcontrolados e Microprocessados
+- (P5) C06 ➡️ Programação Orientada a Objetos com Java
 
 ---
 
