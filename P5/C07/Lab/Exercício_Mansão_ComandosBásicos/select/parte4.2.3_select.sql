@@ -1,0 +1,3 @@
+SELECT *
+FROM investigacao
+WHERE idade BETWEEN 30 AND 50;
