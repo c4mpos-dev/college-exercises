@@ -26,6 +26,7 @@ O repositório está organizado da seguinte maneira:
 
 - (P5) E09 ➡️ Sistemas Microcontrolados e Microprocessados
 - (P5) C06 ➡️ Programação Orientada a Objetos com Java
+- (P5) C07 ➡️ Banco de Dados
 
 ---
 
