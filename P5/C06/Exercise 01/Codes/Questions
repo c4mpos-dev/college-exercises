@@ -1,0 +1,48 @@
+========= QUESTÃO 1 =========
+
+a) Qual será a saída do programa? O programa vai imprimir "Maior que 5" na tela. Como a variável x foi definida com o valor 10, a condição do if (x > 5) é verdadeira, fazendo com que o código execute esse primeiro bloco e ignore o bloco else.
+
+
+b) Papel da estrutura condicional: Ela serve para o programa tomar decisões e "desviar" o fluxo de execução. Em vez de ler o código sempre em linha reta (de cima para baixo), a estrutura condicional permite que o programa avalie uma regra e escolha qual pedaço de código executar dependendo dessa avaliação.
+
+
+========= QUESTÃO 2 =========
+
+b) Apenas II, III e IV estão corretas
+
+
+========= QUESTÃO 3 =========
+
+c) A JRE é suficiente para executar aplicações Java, mas não para desenvolvê-las.
+
+
+========= QUESTÃO 4 =========
+
+b) -128
+
+
+========= QUESTÃO 5 =========
+
+b) Todos armazenam números inteiros, mas possuem diferentes intervalos de valores.
+
+
+========= QUESTÃO 6 =========
+
+c) Executa diretamente arquivos .java.
+
+
+========= QUESTÃO 7 =========
+
+c) Jogos de alto desempenho
+
+
+========= QUESTÃO 8 =========
+
+O Java costuma ser chamado de uma linguagem de duas etapas (híbrida). Ele passa primeiro por uma compilação, onde seu código não vira linguagem de máquina ainda, mas sim um formato intermediário chamado de bytecode. Depois, na hora de rodar de fato, esse bytecode é interpretado (e executado) pela JVM.
+
+
+========= QUESTÃO 9 =========
+
+JRE (Java Runtime Environment): É o ambiente de execução. Você usa apenas quando quer rodar um sistema Java que já está pronto.
+
+JDK (Java Development Kit): É o seu kit de ferramentas como programador. Ele engloba a JRE dentro dele, mas traz todos os recursos essenciais (como o compilador) para você conseguir escrever e testar seus próprios códigos.
