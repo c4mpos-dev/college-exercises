@@ -27,6 +27,8 @@ assim, resumindo:
 [7] Tratamos certinho o buffer das mensagens, porque TCP manda os
     dados em pedacos e nao garante que 1 recv() = 1 mensagem inteira
     (o original assumia isso e dava problema)
+[8] Comando /privado - manda mensagem so pra um usuario especifico,
+    sem o resto da sala ver
 -----------------------------------------------------------------------
 """
 
@@ -143,7 +145,32 @@ def tratar_comando(conexao, apelido, texto):
         return False
 
     if comando == "/ajuda":
-        enviar(conexao, "*** Comandos: /lista  /hora  /ajuda  /sair ***")
+        enviar(conexao, "*** Comandos: /lista  /hora  /ajuda  /privado  /sair ***")
+        return False
+
+    # ### MODIFICACAO DO GRUPO [8] ### - mensagem privada entre dois clientes
+    if comando.startswith("/privado "):
+        resto = texto.strip()[len("/privado "):]
+        partes = resto.split(" ", 1)
+        if len(partes) < 2 or not partes[1].strip():
+            enviar(conexao, "*** Uso: /privado <apelido> <mensagem> ***")
+            return False
+
+        destino, mensagem_privada = partes[0], partes[1]
+        with trava:
+            alvo = None
+            for c, dados in clientes.items():
+                if dados["apelido"] == destino:
+                    alvo = c
+                    break
+
+        if alvo is None:
+            enviar(conexao, f"*** Usuario '{destino}' nao encontrado. Usa /lista pra ver quem ta na sala. ***")
+            return False
+
+        registrar_log(f"PRIVADO   : {apelido} -> {destino}")
+        enviar(alvo, f"*** (privado de {apelido}): {mensagem_privada} ***")
+        enviar(conexao, f"*** (privado para {destino}): {mensagem_privada} ***")
         return False
 
     enviar(conexao, f"*** Comando desconhecido: {texto} (usa /ajuda) ***")

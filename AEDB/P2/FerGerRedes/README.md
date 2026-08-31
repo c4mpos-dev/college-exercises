@@ -19,7 +19,7 @@ Uma sala de bate-papo em rede, no terminal. Um **servidor** aceita vários **cli
 AEDB/P2/FerGerRedes/
 ├── servidor.py        # servidor concorrente, uma thread por cliente
 ├── cliente.py          # cliente com thread de recepção
-├── LEIA-ME.md           # este arquivo
+├── README.md            # este arquivo
 ├── gerar_exe.bat        # gera os .exe com PyInstaller
 └── original/            # programas-base em C/C++ fornecidos pelo professor
     ├── server.c, client.c        (versão Linux)
@@ -57,6 +57,7 @@ Se o Firewall do Windows perguntar, autorize o acesso em **Redes privadas**.
 | `/ajuda` | Lista os comandos |
 | `/lista` | Mostra quem está conectado |
 | `/hora` | Mostra a hora do servidor |
+| `/privado <apelido> <mensagem>` | Manda mensagem só pra um usuário, sem o resto da sala ver |
 | `/sair` | Sai da sala |
 
 ## 5. O que foi modificado em relação ao programa original
@@ -73,8 +74,12 @@ O programa original (pasta `original/`) aceita **um** cliente, lê **uma** mensa
 | 6 | Sem registro | **Log** em arquivo com data, hora e IP |
 | 7 | Assume que 1 `recv()` = 1 mensagem | **Buffer** com delimitador `\n`, tratando TCP como fluxo de bytes |
 | 8 | Cliente sequencial (envia → espera) | Cliente com **thread receptora** paralela ao teclado |
+| 9 | Mensagens sem hora nenhuma | **Timestamp** (data + horário) em toda mensagem que chega na tela |
+| 10 | Sem forma de falar só com uma pessoa | Comando **`/privado`** pra mandar mensagem direto pra um usuário |
 
 Além disso, o servidor tem um pequeno ajuste de robustez: no Windows, um `accept()` bloqueado pode "segurar" o Ctrl+C até alguém conectar. Por isso o servidor usa um timeout de 1s no socket de escuta, pra sempre conseguir encerrar rápido com Ctrl+C (isso está marcado dentro da modificação `[1]`, no `main()` do `servidor.py`).
+
+Os itens 9 e 10 são as modificações mais recentes: `[6]` no `cliente.py` (timestamp) e `[8]` no `servidor.py` (`/privado`) — os números entre parênteses são os que aparecem nos comentários `### MODIFICACAO DO GRUPO ###` dentro de cada arquivo (a numeração reinicia em cada arquivo).
 
 ## 6. Conceitos de rede demonstrados
 

@@ -19,12 +19,15 @@ O que a gente implementou de novo:
 [3] Manda o APELIDO pro servidor assim que conecta
 [4] IP e porta configuravel direto na linha de comando
 [5] Fecha tudo direitinho com /sair ou Ctrl+C
+[6] Cada mensagem que chega mostra a HORA (data + horario) de quando
+    foi recebida, tipo um chat de verdade
 -----------------------------------------------------------------------
 """
 
 import socket
 import sys
 import threading
+from datetime import datetime
 
 # ------------------------------------------------------------------
 # CONFIGURACOES PADRAO (da pra trocar passando argumento na linha de comando)
@@ -58,10 +61,14 @@ def receber_mensagens(conexao):
             while "\n" in buffer_texto:
                 linha, buffer_texto = buffer_texto.split("\n", 1)
                 if linha.strip():
+                    # ### MODIFICACAO DO GRUPO [6] ### - carimbo de data/hora
+                    # Marca o momento que a mensagem chegou nessa tela, tipo
+                    # WhatsApp. Cada cliente carimba com o horario local dele.
+                    carimbo = datetime.now().strftime("%d/%m %H:%M")
                     # o \r apaga o prompt "> " antes de imprimir a mensagem
                     # que chegou, senao o texto recebido fica misturado
                     # com o que voce ta digitando
-                    print(f"\r{linha}\n> ", end="", flush=True)
+                    print(f"\r[{carimbo}] {linha}\n> ", end="", flush=True)
 
     except OSError:
         if not encerrando.is_set():
