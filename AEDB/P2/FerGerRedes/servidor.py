@@ -1,4 +1,9 @@
 """
+-----------------------------------------------------------------------
+SERVIDOR DE CHAT MULTI-CLIENTE (SOCKET TCP)
+-----------------------------------------------------------------------
+Trabalho de Redes de Computadores
+Grupo   : 12 (Cauã Campos e Ana Clara Castilho)
 
 Base que a gente usou (material que o professor deu):
 "server.c" / "servidor.cpp", na pasta /original. E bem simples: aceita
@@ -29,9 +34,13 @@ assim, resumindo:
     (o original assumia isso e dava problema)
 [8] Comando /privado - manda mensagem so pra um usuario especifico,
     sem o resto da sala ver
+[9] Transferencia de arquivo entre clientes - o servidor so repassa os
+    dados (codificados em base64), quem le e escreve o arquivo e o
+    cliente
 -----------------------------------------------------------------------
 """
 
+import base64
 import socket
 import threading
 from datetime import datetime
@@ -145,7 +154,7 @@ def tratar_comando(conexao, apelido, texto):
         return False
 
     if comando == "/ajuda":
-        enviar(conexao, "*** Comandos: /lista  /hora  /ajuda  /privado  /sair ***")
+        enviar(conexao, "*** Comandos: /lista  /hora  /ajuda  /privado  /enviararquivo  /sair ***")
         return False
 
     # ### MODIFICACAO DO GRUPO [8] ### - mensagem privada entre dois clientes
@@ -171,6 +180,37 @@ def tratar_comando(conexao, apelido, texto):
         registrar_log(f"PRIVADO   : {apelido} -> {destino}")
         enviar(alvo, f"*** (privado de {apelido}): {mensagem_privada} ***")
         enviar(conexao, f"*** (privado para {destino}): {mensagem_privada} ***")
+        return False
+
+    # ### MODIFICACAO DO GRUPO [9] ### - repassa arquivo (comando interno,
+    # quem monta essa linha e o cliente atraves do /enviararquivo dele)
+    if comando.startswith("/arquivo "):
+        partes = texto.strip().split(" ", 3)
+        if len(partes) < 4:
+            enviar(conexao, "*** Uso: /enviararquivo <apelido> <caminho_do_arquivo> ***")
+            return False
+
+        destino, nome, conteudo_b64 = partes[1], partes[2], partes[3]
+        with trava:
+            alvo = None
+            for c, dados in clientes.items():
+                if dados["apelido"] == destino:
+                    alvo = c
+                    break
+
+        if alvo is None:
+            enviar(conexao, f"*** Usuario '{destino}' nao encontrado. Usa /lista pra ver quem ta na sala. ***")
+            return False
+
+        try:
+            tamanho = len(base64.b64decode(conteudo_b64))
+        except (ValueError, base64.binascii.Error):
+            enviar(conexao, "*** Arquivo veio corrompido, tenta de novo. ***")
+            return False
+
+        registrar_log(f"ARQUIVO   : {apelido} -> {destino}: {nome} ({tamanho} bytes)")
+        enviar(alvo, f"@@ARQUIVO@@{apelido}@@{nome}@@{conteudo_b64}")
+        enviar(conexao, f"*** Arquivo '{nome}' enviado para {destino} ({tamanho} bytes). ***")
         return False
 
     enviar(conexao, f"*** Comando desconhecido: {texto} (usa /ajuda) ***")
